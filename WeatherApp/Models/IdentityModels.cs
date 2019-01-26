@@ -21,7 +21,7 @@ namespace WeatherApp.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("WeatherApp", throwIfV1Schema: false)
         {
         }
 
@@ -29,5 +29,7 @@ namespace WeatherApp.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Profile> Profiles { get; set; }
     }
 }

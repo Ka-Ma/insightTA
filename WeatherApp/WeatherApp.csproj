@@ -179,13 +179,67 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901260720263_test.cs" />
+    <Compile Include="Migrations\201901260720263_test.Designer.cs">
+      <DependentUpon>201901260720263_test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Profile.cs" />
+    <Compile Include="Models\Weather.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\WeatherApp.mdf" />
+    <Content Include="App_Data\WeatherApp_log.ldf" />
+    <Content Include="Content\Icons\01-s.png" />
+    <Content Include="Content\Icons\02-s.png" />
+    <Content Include="Content\Icons\03-s.png" />
+    <Content Include="Content\Icons\04-s.png" />
+    <Content Include="Content\Icons\05-s.png" />
+    <Content Include="Content\Icons\06-s.png" />
+    <Content Include="Content\Icons\07-s.png" />
+    <Content Include="Content\Icons\08-s.png" />
+    <Content Include="Content\Icons\11-s.png" />
+    <Content Include="Content\Icons\12-s.png" />
+    <Content Include="Content\Icons\13-s.png" />
+    <Content Include="Content\Icons\14-s.png" />
+    <Content Include="Content\Icons\15-s.png" />
+    <Content Include="Content\Icons\16-s.png" />
+    <Content Include="Content\Icons\17-s.png" />
+    <Content Include="Content\Icons\18-s.png" />
+    <Content Include="Content\Icons\19-s.png" />
+    <Content Include="Content\Icons\20-s.png" />
+    <Content Include="Content\Icons\21-s.png" />
+    <Content Include="Content\Icons\22-s.png" />
+    <Content Include="Content\Icons\23-s.png" />
+    <Content Include="Content\Icons\24-s.png" />
+    <Content Include="Content\Icons\25-s.png" />
+    <Content Include="Content\Icons\26-s.png" />
+    <Content Include="Content\Icons\29-s.png" />
+    <Content Include="Content\Icons\30-s.png" />
+    <Content Include="Content\Icons\31-s.png" />
+    <Content Include="Content\Icons\32-s.png" />
+    <Content Include="Content\Icons\33-s.png" />
+    <Content Include="Content\Icons\34-s.png" />
+    <Content Include="Content\Icons\35-s.png" />
+    <Content Include="Content\Icons\36-s.png" />
+    <Content Include="Content\Icons\37-s.png" />
+    <Content Include="Content\Icons\38-s.png" />
+    <Content Include="Content\Icons\39-s.png" />
+    <Content Include="Content\Icons\40-s.png" />
+    <Content Include="Content\Icons\41-s.png" />
+    <Content Include="Content\Icons\42-s.png" />
+    <Content Include="Content\Icons\43-s.png" />
+    <Content Include="Content\Icons\44-s.png" />
+    <Content Include="Content\Logos\AccuWeatherLogo.jpeg" />
+    <Content Include="Content\Logos\AccuWeatherLogoImgOnly.jpeg" />
+    <Content Include="Content\Logos\AccuWeatherLogoImgOnly.png" />
+    <Content Include="Content\Logos\AccuWeatherLogoSml.jpeg" />
+    <Content Include="Content\Logos\AccuWeatherLogoStacked.jpeg" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -241,10 +295,9 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\Profile.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -257,6 +310,11 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201901260720263_test.resx">
+      <DependentUpon>201901260720263_test.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

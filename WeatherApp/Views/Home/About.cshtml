@@ -4,4 +4,33 @@
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<p>This weather app was developed by Katherine Mann on Australia Day Weekend 2019 as a Technical Assessment for <a href="https://au.insight.com/en_AU/home.html">Insight</a>.</p>
+
+<h4>The Brief</h4>
+<p>
+    You can use any libraries and tools you wish, just note in your solution if it's not included in the package you submit. You can also include a brief explanation of your design and any assumptions you made, along with your solution.
+    We’d like you to demonstrate your solution design and development skills, and are interested in how you approached the problem, and what alternatives you considered.
+</p>
+<p>
+<p>
+    You are developing a website to display weather information. You want to allow users to select their location and show current weather information.
+    You've decided to use http://developer.accuweather.com REST API to acquire your data for the application. Create an account to obtain an API key to use against the APIs.
+    Users should be able to narrow their location search by country. Once the location is selected, ensure it is saved to a database for subsequent visits.
+    After the user has selected their location, display the current weather information via the following API:
+    http://developer.accuweather.com/accuweather-current-conditions-api/apis/get/currentconditions/v1/?locationKey
+    The user interface should work across a variety of devices and platforms including PCs, tablets and mobile phones.
+</p>
+
+<h4>Design</h4>
+<p>
+    As the user would want to be able to quickly view their weather information on subsequent visits the index page is a view of the data retrieved most recently for the location key we have on record for them.
+    On first opening the app the user is invited to register or login.
+    On registering the user can drill down from Region to Country to State to finally search on their city name.
+    If they have previously registered and are just logging in they will be redirected to the index.
+    Once they have selected the city they want that will be recorded in the database against their username for future logins.
+</p>
+<p>As part of the terms and conditions for using the AccuWeather API are to have their logo and a link to their site you will see that on the footer of every page.</p>
+
+<h4>Assumptions</h4>
+<p>That the user will log into an account rather than rely on cookies as the same data will need to be accessed from different devices by the one user.</p>
+

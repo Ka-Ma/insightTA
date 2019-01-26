@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Profile";
+}
+
+<div class="jumbotron">
+    <h1>Profile</h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-lg-2">
+        REGION
+        <select id="region" name="region" onchange="getCountry(this)"></select>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-2">
+        COUNTRY
+        <select id="country" name="country" onchange="getAdmin(this)" hidden></select>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-2">
+        ADMINAREA
+        <select id="admin" name="admin" onchange="showCity()" hidden></select>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-2">
+        CITY AND BUTTON
+        <input id="city" name="city" hidden>
+        <button id="btnCity" onclick="getCity()" hidden>Find City</button>
+    </div>
+</div>
+<div class="row" id="saveProfileArea" hidden>
+    <div class="col-xs-12">
+        <p>Select the city you wish to save as your location:</p>
+        <div id="cityList"></div>
+        <button id="btnSave" onclick="saveProfile()" hidden>Save Profile</button>
+    </div>
+</div>
+<div class="warning" id="error"></div>
+
+<script>
+    $(document).ready(function () {
+        console.log("ready");
+
+        @*$.get("@Url.Action("GetRegions","Home")", function (response) {
+
+            $("#region").show();
+
+            //build region select list
+            var regionList = $("#region").empty();
+
+            response.forEach(function (e) {
+                regionList.append($("<option>").attr('value', e.ID).text(e.EnglishName));
+            });
+
+        });*@
+
+
+    });
+
+    function getCountry(selected) {
+        var s = selected.options[selected.selectedIndex].value;
+
+        $.get("@Url.Action("GetCountryByRegion", "Home")?region="+s, function (response) {
+
+            $("#country").show();
+
+            //build region select list
+            var regionList = $("#country").empty();
+
+            response.forEach(function (e) {
+                regionList.append($("<option>").attr('value', e.ID).text(e.EnglishName));
+            });
+        });
+    }
+
+    function getAdmin(selected) {
+        var s = selected.options[selected.selectedIndex].value;
+
+        $.get("@Url.Action("GetAdminAreaByCountry", "Home")?country=" + s, function (response) {
+
+            $("#admin").show();
+
+            //build select list
+            var list = $("#admin").empty();
+
+            response.forEach(function (e) {
+                list.append($("<option>").attr('value', e.ID).text(e.EnglishName));
+            });
+        });
+    }
+
+    function showCity() {
+        $("#city").show();
+        $("#btnCity").show();
+    }
+
+    function getCity() {
+        $("#saveProfileArea").show();
+
+        var c = $("#country :selected").val();
+        var a = $("#admin :selected").val();
+        var s = $("#city").val();
+
+        $.get("@Url.Action("GetCityByCountryAndAdmin", "Home")?country=" + c + "&admin=" + a + "&search=" + s, function (response) {
+
+            console.log(response);
+            var list = $("#cityList").empty();
+
+            response.forEach(function (e) {
+                //in case more than one
+                list = list + "<input type='radio' id='"+e.ID+"' value='"+e.Key+"' name='cityList'>"+e.EnglishName+"<br>";
+            });
+        
+        });
+    }
+
+    function saveProfile() {
+        console.log("tried to save profile");
+        //send user id & location key to save to db
+
+        //if successfull redirect to index
+
+        //else set error message
+    }
+
+</script>
