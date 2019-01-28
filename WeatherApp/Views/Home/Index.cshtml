@@ -17,41 +17,32 @@
         </div>
     </div>
 </div>
+<div class="alert-danger" id="error"></div>
 
 
-    <script>
+<script>
     $(document).ready(function () {
-        console.log("ready");
-        //get profile's name
+        //get and set profile's name
         $.get("@Url.Action("GetCurrentProfileName", "Home")", function (response) {
-             console.log(response);
              $("#cityName").append(response);
-
         });
 
         $("#icon").empty();
         $("#text").empty();
         $("#temp").empty();
 
-        //var a = 1;
-        //var b = "Sunny";
-        //var c = 27.2;
-        //var d = "C";
-
-        ////test
-        //$("#icon").append("<img class='mx-auto d-block' src='../Content/Icons/" + a + "-s.png' />");
-        //$("#text").append(b);
-        //$("#temp").append(c + "&deg;" + d);
-
         //send off for rest of it.
-        $.get("@Url.Action("GetCurrentProfileWeather","Home")", function (response) {
-             console.log(response);
-             //populate fields with response
-             $("#icon").append("<img src='/Content/Icons/"+response[0].WeatherIcon+"-s.png' />");
+         var jqxhr = $.get("@Url.Action("GetCurrentProfileWeather","Home")", function (response) {
+            //populate fields with response
+            $("#icon").append("<img src='/Content/Icons/"+response[0].WeatherIcon+"-s.png' />");
             $("#text").append(response[0].WeatherText);
             $("#temp").append(response[0].Temperature.Metric.Value + "&deg;"+ response[0].Temperature.Metric.Unit);
 
 
+        }).fail(function (r) {
+                if (r.status == 500) {
+                    $("#error").append("The AccuWeather Trial Account is probably out of pings, we only get 50!")
+                }
         });
     });
-    </script>
+</script>

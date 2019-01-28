@@ -17,13 +17,13 @@ namespace WeatherApp.Controllers
             //if user is not logged in redirect to login/register otherwise just return view
             var loggedIn = System.Web.HttpContext.Current.User?.Identity.IsAuthenticated ?? false;
             var currentUserId = User?.Identity.GetUserId();
-            var profile = db.Profiles.ToList().Where(w => w.ProfileID == currentUserId);
+            var profile = db.Profiles.SingleOrDefault(w => w.ProfileID == currentUserId);
 
             if (!loggedIn)
             {
                 return RedirectToAction("Login", "Account");
             
-            }else if (loggedIn && !(profile.Count() > 0))
+            }else if (loggedIn && profile == null)
             {
                 return RedirectToAction("Index", "Profile");
             }
@@ -71,40 +71,20 @@ namespace WeatherApp.Controllers
             return Json(weather.getCityByCountryAndAdmin(country, admin, search), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetCurrentProfile()
-        {
-            var currentUserId = User.Identity.GetUserId();
-            var currentProfile = db.Profiles.ToList().Where(w => w.ProfileID == currentUserId);
-
-            return Json(currentProfile, JsonRequestBehavior.AllowGet);
-        }
-
         public JsonResult GetCurrentProfileName()
         {
             var currentUserId = User.Identity.GetUserId();
-            var currentProfile = db.Profiles.ToList().Where(w => w.ProfileID == currentUserId);
-            string currentName = "";
-
-            foreach (var p in currentProfile)
-            {
-                currentName = p.LocationName;
-            }
-
-            return Json(currentName, JsonRequestBehavior.AllowGet);
+            var currentProfile = db.Profiles.SingleOrDefault(w => w.ProfileID == currentUserId);
+            
+            return Json(currentProfile.LocationName, JsonRequestBehavior.AllowGet);
         }
 
         public string GetCurrentProfileKey()
         {
             var currentUserId = User.Identity.GetUserId();
-            var currentProfile = db.Profiles.ToList().Where(w => w.ProfileID == currentUserId);
-            string currentKey = "";
+            var currentProfile = db.Profiles.SingleOrDefault(w => w.ProfileID == currentUserId);
             
-            foreach(var p in currentProfile)
-            {
-                currentKey = p.LocationKey;
-            }
-
-            return currentKey;
+            return currentProfile.LocationKey;
         }
 
         public JsonResult GetCurrentProfileWeather()

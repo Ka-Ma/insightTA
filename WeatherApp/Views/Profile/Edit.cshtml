@@ -56,48 +56,63 @@ else
     $(document).ready(function () {
             console.log("ready");
 
-        $.get("@Url.Action("GetRegions","Home")", function (response) {
+        var jqxhr = $.get("@Url.Action("GetRegions","Home")", function (response) {
 
             $("#region").show();
 
             //build region select list
-            var regionList = $("#region").empty();
+            var list = $("#region").empty();
+            list.append($("<option>").attr('value', "--").text("Select a Region..."));
 
             response.forEach(function (e) {
-                regionList.append($("<option>").attr('value', e.ID).text(e.EnglishName));
+                list.append($("<option>").attr('value', e.ID).text(e.EnglishName));
             });
+        }).fail(function (r) {
+            if (r.status == 500) {
+                $("#error").append("The AccuWeather Trial Account is probably out of pings, we only get 50!")
+            }
         });
     });
 
     function getCountry(selected) {
         var s = selected.options[selected.selectedIndex].value;
 
-        $.get("@Url.Action("GetCountryByRegion", "Home")?region="+s, function (response) {
+        var jqxhr = $.get("@Url.Action("GetCountryByRegion", "Home")?region="+s, function (response) {
 
             $("#country").show();
 
             //build region select list
-            var regionList = $("#country").empty();
+            var list = $("#country").empty();
+            list.append($("<option>").attr('value', "--").text("Select a Country..."));
 
             response.forEach(function (e) {
-                regionList.append($("<option>").attr('value', e.ID).text(e.EnglishName));
+                list.append($("<option>").attr('value', e.ID).text(e.EnglishName));
             });
+        }).fail(function (r) {
+            if (r.status == 500) {
+                $("#error").append("The AccuWeather Trial Account is probably out of pings, we only get 50!")
+            }
         });
     }
 
     function getAdmin(selected) {
         var s = selected.options[selected.selectedIndex].value;
 
-        $.get("@Url.Action("GetAdminAreaByCountry", "Home")?country=" + s, function (response) {
+        var jqxhr = $.get("@Url.Action("GetAdminAreaByCountry", "Home")?country=" + s, function (response) {
 
             $("#admin").show();
 
             //build select list
             var list = $("#admin").empty();
+            list.append($("<option>").attr('value', "--").text("Select an Admin Area..."));
 
             response.forEach(function (e) {
                 list.append($("<option>").attr('value', e.ID).text(e.EnglishName));
             });
+        }).fail(function (r) {
+            if (r.status == 500) {
+                $("#error").append("The AccuWeather Trial Account is probably out of pings, we only get 50!")
+            }
         });
     }
 
@@ -113,41 +128,36 @@ else
         var a = $("#admin :selected").val();
         var s = $("#city").val();
 
-        $.get("@Url.Action("GetCityByCountryAndAdmin", "Home")?country=" + c + "&admin=" + a + "&search=" + s, function (response) {
-
-            console.log(response);
+        var jqxhr = $.get("@Url.Action("GetCityByCountryAndAdmin", "Home")?country=" + c + "&admin=" + a + "&search=" + s, function (response) {
             var list = $("#cityList").empty();
 
             response.forEach(function (e) {
                 //in case more than one
-                console.log("have list of cities");
-                console.log(e);
                 list.append("<label><input type='radio' id='" + e.Rank + "' value='" + e.Key + "' name='cityList'> " + e.EnglishName + "</label><br>");
-                console.log(list);
             });
+
             $("#btnSave").show();
+
+        }).fail(function (r) {
+            if (r.status == 500) {
+                $("#error").append("The AccuWeather Trial Account is probably out of pings, we only get 50!")
+            }
         });
     }
 
     function saveProfile() {
-        console.log("tried to save profile");
         //send user id & location key to save to db
         var lk = $("input[type='radio'][name='cityList']:checked").val();
         var ln = $("input[type='radio'][name='cityList']:checked").parent('label').text();
-        console.log(lk);
-        console.log(ln);
-        //test vars
-        //var lk = "26797";
-        //var ln = "Perth";
-
-        if (lk === null) {
+        
+        if (Undefined(lk)) {
             $("#error").append("<p>Please select a city</p>");
             return false;
         }
 
         if ("True" == "@Model.exists") {
             $.get("@Url.Action("UpdateProfile", "Profile")?locationKey=" + lk + "&locationName=" + ln, function (response) {
-                console.log(response);
+                
                 if (response === "ERROR") {
                     $("#error").append(response);
                 } else {
@@ -158,7 +168,7 @@ else
         else
         {
             $.get("@Url.Action("AddProfile", "Profile")?locationKey=" + lk + "&locationName=" + ln, function (response) {
-                console.log(response);
+                
                 if (response === "ERROR") {
                     $("#error").append(response);
                 } else {
@@ -168,4 +178,8 @@ else
         } 
     }
 
+    function Undefined(value) {
+        var undefined = void (0);
+        return value === undefined;
+    }
 </script>
