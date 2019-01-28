@@ -1,4 +1,5 @@
-﻿@{
+﻿@model WeatherApp.Models.ProfileViewModel
+@{
     ViewBag.Title = "Profile";
 }
 
@@ -6,39 +7,56 @@
     <h1>Profile</h1>
 </div>
 
+@if (Model.exists)
+{
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Saved location: @Model.LocationName (@Model.LocationKey)</h2>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-xs-12">
+            <p>Find your city! Start with a region and narrow it down:</p>
+        </div>
+    </div>
+}
+
 <div class="row">
-    <div class="col-xs-12 col-sm-6 col-lg-2">
-        REGION
+    <div class="col-xs-12 col-sm-6 col-lg-3">
         <select id="region" name="region" onchange="getCountry(this)"></select>
     </div>
-    <div class="col-xs-12 col-sm-6 col-lg-2">
-        COUNTRY
+    <div class="col-xs-12 col-sm-6 col-lg-3">
         <select id="country" name="country" onchange="getAdmin(this)" hidden></select>
     </div>
-    <div class="col-xs-12 col-sm-6 col-lg-2">
-        ADMINAREA
+    <div class="col-xs-12 col-sm-6 col-lg-3">
         <select id="admin" name="admin" onchange="showCity()" hidden></select>
     </div>
-    <div class="col-xs-12 col-sm-6 col-lg-2">
-        CITY AND BUTTON
+    <div class="col-xs-12 col-sm-6 col-lg-3">
         <input id="city" name="city" hidden>
         <button id="btnCity" onclick="getCity()" hidden>Find City</button>
     </div>
 </div>
-<div class="row" id="saveProfileArea" hidden>
+<div class="label-warning" id="error">
+</div>
+<div class="row" id="saveProfileArea" hidden><br />
     <div class="col-xs-12">
         <p>Select the city you wish to save as your location:</p>
         <div id="cityList"></div>
-        <button id="btnSave" onclick="saveProfile()" hidden>Save Profile</button>
+        <br />
+        <button id="btnSave" onclick="saveProfile()" hidden>@if (Model.exists) {<span>Update Profile</span>}else{<span>Save Profile</span>}</button>
     </div>
 </div>
-<div class="warning" id="error"></div>
+
 
 <script>
+    
     $(document).ready(function () {
-        console.log("ready");
+            console.log("ready");
 
-        @*$.get("@Url.Action("GetRegions","Home")", function (response) {
+        $.get("@Url.Action("GetRegions","Home")", function (response) {
 
             $("#region").show();
 
@@ -48,10 +66,7 @@
             response.forEach(function (e) {
                 regionList.append($("<option>").attr('value', e.ID).text(e.EnglishName));
             });
-
-        });*@
-
-
+        });
     });
 
     function getCountry(selected) {
@@ -105,19 +120,52 @@
 
             response.forEach(function (e) {
                 //in case more than one
-                list = list + "<input type='radio' id='"+e.ID+"' value='"+e.Key+"' name='cityList'>"+e.EnglishName+"<br>";
+                console.log("have list of cities");
+                console.log(e);
+                list.append("<label><input type='radio' id='" + e.Rank + "' value='" + e.Key + "' name='cityList'> " + e.EnglishName + "</label><br>");
+                console.log(list);
             });
-        
+            $("#btnSave").show();
         });
     }
 
     function saveProfile() {
         console.log("tried to save profile");
         //send user id & location key to save to db
+        var lk = $("input[type='radio'][name='cityList']:checked").val();
+        var ln = $("input[type='radio'][name='cityList']:checked").parent('label').text();
+        console.log(lk);
+        console.log(ln);
+        //test vars
+        //var lk = "26797";
+        //var ln = "Perth";
 
-        //if successfull redirect to index
+        if (lk === null) {
+            $("#error").append("<p>Please select a city</p>");
+            return false;
+        }
 
-        //else set error message
+        if ("True" == "@Model.exists") {
+            $.get("@Url.Action("UpdateProfile", "Profile")?locationKey=" + lk + "&locationName=" + ln, function (response) {
+                console.log(response);
+                if (response === "ERROR") {
+                    $("#error").append(response);
+                } else {
+                    location.href = "../Home/Index";
+                }
+            });
+        }
+        else
+        {
+            $.get("@Url.Action("AddProfile", "Profile")?locationKey=" + lk + "&locationName=" + ln, function (response) {
+                console.log(response);
+                if (response === "ERROR") {
+                    $("#error").append(response);
+                } else {
+                    location.href = "../Home/Index";
+                }
+            });
+        } 
     }
 
 </script>

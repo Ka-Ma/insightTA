@@ -176,6 +176,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -183,11 +184,16 @@
     <Compile Include="Migrations\201901260720263_test.Designer.cs">
       <DependentUpon>201901260720263_test.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901270039073_profileLocnName.cs" />
+    <Compile Include="Migrations\201901270039073_profileLocnName.Designer.cs">
+      <DependentUpon>201901270039073_profileLocnName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Profile.cs" />
+    <Compile Include="ViewModel\ProfileViewModel.cs" />
     <Compile Include="Models\Weather.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -195,14 +201,14 @@
   <ItemGroup>
     <Content Include="App_Data\WeatherApp.mdf" />
     <Content Include="App_Data\WeatherApp_log.ldf" />
-    <Content Include="Content\Icons\01-s.png" />
-    <Content Include="Content\Icons\02-s.png" />
-    <Content Include="Content\Icons\03-s.png" />
-    <Content Include="Content\Icons\04-s.png" />
-    <Content Include="Content\Icons\05-s.png" />
-    <Content Include="Content\Icons\06-s.png" />
-    <Content Include="Content\Icons\07-s.png" />
-    <Content Include="Content\Icons\08-s.png" />
+    <Content Include="Content\Icons\1-s.png" />
+    <Content Include="Content\Icons\2-s.png" />
+    <Content Include="Content\Icons\3-s.png" />
+    <Content Include="Content\Icons\4-s.png" />
+    <Content Include="Content\Icons\5-s.png" />
+    <Content Include="Content\Icons\6-s.png" />
+    <Content Include="Content\Icons\7-s.png" />
+    <Content Include="Content\Icons\8-s.png" />
     <Content Include="Content\Icons\11-s.png" />
     <Content Include="Content\Icons\12-s.png" />
     <Content Include="Content\Icons\13-s.png" />
@@ -295,7 +301,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\Profile.cshtml" />
+    <Content Include="Views\Profile\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -314,6 +320,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201901260720263_test.resx">
       <DependentUpon>201901260720263_test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901270039073_profileLocnName.resx">
+      <DependentUpon>201901270039073_profileLocnName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -4,31 +4,28 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WeatherApp.Models;
+using Microsoft.AspNet.Identity;
 
 namespace WeatherApp.Controllers
 {
     public class HomeController : Controller
     {
-        readonly ApplicationDbContext db;
-
-        private HomeController(ApplicationDbContext db)
-        {
-            db = this.db;
-        }
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ActionResult Index()
         {
             //if user is not logged in redirect to login/register otherwise just return view
             var loggedIn = System.Web.HttpContext.Current.User?.Identity.IsAuthenticated ?? false;
-            var profile = false;//look up profile for user logged in
-            
+            var currentUserId = User?.Identity.GetUserId();
+            var profile = db.Profiles.ToList().Where(w => w.ProfileID == currentUserId);
+
             if (!loggedIn)
             {
-                return RedirectToAction("Login", "Account", new { area = "Profile" });
+                return RedirectToAction("Login", "Account");
             
-            }else if (loggedIn && !profile)
+            }else if (loggedIn && !(profile.Count() > 0))
             {
-                return RedirectToAction("Profile", "Home");
+                return RedirectToAction("Index", "Profile");
             }
 
             return View();
@@ -48,10 +45,7 @@ namespace WeatherApp.Controllers
             return View();
         }
         
-        public ActionResult Profile()
-        {
-            return View();
-        }
+        
 
         public JsonResult GetRegions()
         {
@@ -75,6 +69,55 @@ namespace WeatherApp.Controllers
         {
             Weather weather = new Weather();
             return Json(weather.getCityByCountryAndAdmin(country, admin, search), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetCurrentProfile()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var currentProfile = db.Profiles.ToList().Where(w => w.ProfileID == currentUserId);
+
+            return Json(currentProfile, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetCurrentProfileName()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var currentProfile = db.Profiles.ToList().Where(w => w.ProfileID == currentUserId);
+            string currentName = "";
+
+            foreach (var p in currentProfile)
+            {
+                currentName = p.LocationName;
+            }
+
+            return Json(currentName, JsonRequestBehavior.AllowGet);
+        }
+
+        public string GetCurrentProfileKey()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var currentProfile = db.Profiles.ToList().Where(w => w.ProfileID == currentUserId);
+            string currentKey = "";
+            
+            foreach(var p in currentProfile)
+            {
+                currentKey = p.LocationKey;
+            }
+
+            return currentKey;
+        }
+
+        public JsonResult GetCurrentProfileWeather()
+        {
+            return GetForecastByKey(GetCurrentProfileKey());
+        }
+
+        public JsonResult GetForecastByKey(string key)
+        {
+            Weather weather = new Weather();
+            JsonResult result = Json(weather.getForecastByKey(key), JsonRequestBehavior.AllowGet);
+
+            return result;
         }
     }
 }

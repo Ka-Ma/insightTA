@@ -10,5 +10,8 @@ namespace WeatherApp.Models
 
         [Display(Name ="Location Key")]
         public string LocationKey { get; set; }
+
+        [Display(Name ="Location Name")]
+        public string LocationName { get; set; }
     }
 }

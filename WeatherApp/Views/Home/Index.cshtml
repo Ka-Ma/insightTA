@@ -3,45 +3,55 @@
 }
 
 <div class="jumbotron">
-    <h1>Your Weather For ((CITY))</h1>
+    <h1 id="cityName">Your Weather For </h1>
 </div>
 
-<div class="row">
-    <div class="col-xs-12 col-sm-6 col-lg-2">
-        WeatherIcon int
-        WeatherText string
-        Temperature.Metric.Value double
-        Temperature.Metric.Unit string
-        Wind.Direction.English string
-        Wind.Speed	object
-
-        UVIndex	int32
-        UVIndexText	string
-
-        PrecipitationSummary.PastHour	object
+<div class="row center-block mx-auto" style="width: 300px">
+    <div class="col-xs-6 text-center mx-auto d-block">
+        <div id="icon"></div>
+        <div id="text"></div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-lg-2">
-        
-
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-2">
-        
-
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-2">
-        
-
+    <div class="row center-block mx-auto" style="width: 300px">
+        <div class="col-xs-6 center-block">
+            <h1 id="temp"></h1>
+        </div>
     </div>
 </div>
 
-<script>
+
+    <script>
     $(document).ready(function () {
         console.log("ready");
-         @*$.get("@Url.Action("GetUserLocation","Home")", function (response) {
+        //get profile's name
+        $.get("@Url.Action("GetCurrentProfileName", "Home")", function (response) {
+             console.log(response);
+             $("#cityName").append(response);
 
-            //populate fields with response
-            
+        });
 
-        });*@
+        $("#icon").empty();
+        $("#text").empty();
+        $("#temp").empty();
+
+        //var a = 1;
+        //var b = "Sunny";
+        //var c = 27.2;
+        //var d = "C";
+
+        ////test
+        //$("#icon").append("<img class='mx-auto d-block' src='../Content/Icons/" + a + "-s.png' />");
+        //$("#text").append(b);
+        //$("#temp").append(c + "&deg;" + d);
+
+        //send off for rest of it.
+        $.get("@Url.Action("GetCurrentProfileWeather","Home")", function (response) {
+             console.log(response);
+             //populate fields with response
+             $("#icon").append("<img src='/Content/Icons/"+response[0].WeatherIcon+"-s.png' />");
+            $("#text").append(response[0].WeatherText);
+            $("#temp").append(response[0].Temperature.Metric.Value + "&deg;"+ response[0].Temperature.Metric.Unit);
+
+
+        });
     });
-</script>
+    </script>

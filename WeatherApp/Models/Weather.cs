@@ -46,6 +46,12 @@ namespace WeatherApp.Models
             return getJsonUrl(url);
         }
 
+        public Object getForecastByKey(string key) {
+            string url = "http://dataservice.accuweather.com/currentconditions/v1/" + key + "?apikey=" + APIKEY;
+
+            return getJsonUrl(url);
+            }
+
         private Object getJsonUrl(string url)
         {
             var client = new WebClient();
